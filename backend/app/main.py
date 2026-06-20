@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .core.database import connect_to_mongo, close_mongo_connection
-from .routers import auth  # <-- Yeh line IMPORTANT hai
+from .routers import auth, submissions  # <-- Yeh line dono routers import kar rahi hai
 
 app = FastAPI(
     title="Content Moderation Platform",
@@ -9,7 +9,7 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# CORS
+# CORS (React frontend ko allow karne ke liye)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:3000", "http://localhost:5173"],
@@ -27,10 +27,11 @@ async def startup_db_client():
 async def shutdown_db_client():
     await close_mongo_connection()
 
-# ---------- YAHAN ROUTERS REGISTER HONGE ----------
-app.include_router(auth.router, prefix="/api")  # <-- Yeh line IMPORTANT hai
+# ---------- SAB ROUTERS YAHAN REGISTER HONGE ----------
+app.include_router(auth.router, prefix="/api")
+app.include_router(submissions.router, prefix="/api")  # <-- Image upload wala router
 
-# ---------- Health Check Routes ----------
+# ---------- Health Check Routes (Public) ----------
 @app.get("/api/health")
 async def health_check():
     return {"status": "OK", "message": "Backend is running!"}

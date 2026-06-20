@@ -11,3 +11,5 @@ rq==1.16.1
 email-validator
 passlib==1.7.4
 bcrypt==3.2.0
+python-multipart==0.0.9
+aiofiles==24.1.0
