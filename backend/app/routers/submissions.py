@@ -119,21 +119,28 @@ async def get_submission_status(
     if not submission:
         raise HTTPException(status_code=404, detail="Submission not found")
     
-    # Ensure user owns this submission (or is admin)
+    # Ensure user owns this submission
     if str(submission["user_id"]) != str(current_user["_id"]):
         raise HTTPException(status_code=403, detail="Access denied")
     
-    # Get all images for this submission
+    # Get all images
     images_cursor = db["images"].find({"submission_id": submission_id})
     images = await images_cursor.to_list(length=10)
     
-    # Get verdicts for these images
-    image_ids = [img["_id"] for img in images]
-    verdicts_cursor = db["verdicts"].find({"image_id": {"$in": image_ids}})
+    image_id_strings = [str(img["_id"]) for img in images]
+    verdicts_cursor = db["verdicts"].find({"image_id": {"$in": image_id_strings}})
     verdicts = await verdicts_cursor.to_list(length=10)
     
-    # Map verdicts to images
-    verdict_map = {v["image_id"]: v for v in verdicts}
+    # --- FIX: Serialize verdicts properly (convert ObjectId & datetime) ---
+    verdict_map = {}
+    for v in verdicts:
+        verdict_map[v["image_id"]] = {
+            "overall_outcome": v["overall_outcome"],
+            "category_breakdown": v["category_breakdown"],
+            "generated_at": v["generated_at"].isoformat() if "generated_at" in v else None,
+            "policy_snapshot": v.get("policy_snapshot")
+        }
+    # -----------------------------------------------------------------
     
     result_images = []
     for img in images:
@@ -148,6 +155,6 @@ async def get_submission_status(
     return {
         "submission_id": submission_id,
         "status": submission["status"],
-        "submitted_at": submission["submitted_at"],
+        "submitted_at": submission["submitted_at"].isoformat() if "submitted_at" in submission else None,
         "images": result_images
     }
