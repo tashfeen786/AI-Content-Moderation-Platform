@@ -1,0 +1,42 @@
+# Env files (SECRETS - NEVER COMMIT)
+.env
+.env.local
+.env.*.local
+
+# Python (Backend)
+__pycache__/
+*.py[cod]
+*.so
+.Python
+venv/
+env/
+ENV/
+.venv
+pip-log.txt
+pip-delete-this-directory.txt
+.pytest_cache/
+.coverage
+htmlcov/
+dist/
+build/
+*.egg-info/
+
+# Node / React (Frontend - abhi nahi hai but future ke liye)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+build/
+dist/
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs & Database
+*.log
+*.db
+*.sqlite
