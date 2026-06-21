@@ -158,3 +158,43 @@ async def get_submission_status(
         "submitted_at": submission["submitted_at"].isoformat() if "submitted_at" in submission else None,
         "images": result_images
     }
+
+
+@router.get("/history")
+async def get_user_history(current_user: dict = Depends(get_current_user)):
+    """
+    Get all submissions for the currently logged-in user.
+    """
+    db = get_db()
+    
+    # Fetch submissions for this user, newest first
+    submissions_cursor = db["submissions"].find(
+        {"user_id": current_user["_id"]}
+    ).sort("submitted_at", -1)
+    
+    submissions = await submissions_cursor.to_list(length=50)
+    
+    result = []
+    for sub in submissions:
+        sub_id_str = str(sub["_id"])
+        
+        # Fetch images linked to this submission
+        images_cursor = db["images"].find({"submission_id": sub_id_str})
+        images = await images_cursor.to_list(length=10)
+        
+        img_list = []
+        for img in images:
+            img_list.append({
+                "id": str(img["_id"]),
+                "filename": img.get("filename", "unknown"),
+                "status": img.get("verdict_status", "Pending")
+            })
+        
+        result.append({
+            "submission_id": sub_id_str,
+            "status": sub.get("status", "Processing"),
+            "submitted_at": sub["submitted_at"].isoformat(),
+            "images": img_list
+        })
+    
+    return result
