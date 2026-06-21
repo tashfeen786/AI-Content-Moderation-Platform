@@ -30,7 +30,8 @@ async def shutdown_db_client():
 # ---------- SAB ROUTERS YAHAN REGISTER HONGE ----------
 app.include_router(auth.router, prefix="/api")
 app.include_router(submissions.router, prefix="/api")  # <-- Image upload wala router
-
+from .routers import auth, submissions, admin  # <-- admin add karein
+app.include_router(admin.router, prefix="/api")  
 # ---------- Health Check Routes (Public) ----------
 @app.get("/api/health")
 async def health_check():
