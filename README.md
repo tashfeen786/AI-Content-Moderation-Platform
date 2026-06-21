@@ -1,11 +1,10 @@
-# AI Content Moderation Platform
+# 🛡️ AI Content Moderation Platform
 
 A Full-Stack AI-powered Content Moderation System built with **FastAPI** (Python), **React** (JavaScript), and **MongoDB**. It allows users to submit images for automated policy compliance screening, with a structured appeal process and a comprehensive admin dashboard.
 
 ## 🚀 Features
 
 ### 👤 User Features
-
 - **JWT Authentication**: Secure login and registration.
 - **Image Submission**: Upload one or multiple images (Max 5) for moderation.
 - **Real-time Screening**: Background processing using a mock AI engine (6 moderation categories).
@@ -13,7 +12,6 @@ A Full-Stack AI-powered Content Moderation System built with **FastAPI** (Python
 - **Appeals**: File an appeal against Flagged/Blocked submissions with a justification.
 
 ### 🛠️ Admin Features
-
 - **Policy Configuration**: Enable/Disable categories, set confidence thresholds (0-100%), and change enforcement actions (Auto-Block / Flag for Review).
 - **Appeals Queue**: View pending appeals, review user justifications, accept/reject appeals with an optional admin response.
 - **Analytics Dashboard**:
@@ -22,22 +20,20 @@ A Full-Stack AI-powered Content Moderation System built with **FastAPI** (Python
   - User ranking based on submission count and violation count.
 
 ### 🧠 AI Screening (Mock)
-
 - **6 Categories**: Graphic Violence, Hate Symbols, Self-Harm, Extremist Propaganda, Weapons & Contraband, Harassment & Humiliation.
 - Each category returns a classification result (Detected/Clean), confidence score, and reasoning.
 - Overall outcome is determined dynamically based on admin-configured policies.
 
+---
+
 ## 🏗️ Architecture
 
 ### Tech Stack
-
 - **Backend**: Python 3.10+, FastAPI, Motor (Async MongoDB), PyJWT, Bcrypt.
 - **Frontend**: React 18, Vite, Tailwind CSS, Recharts, Axios.
 - **Database**: MongoDB (Atlas or Local).
-- **Queue (Optional)**: Redis + RQ (Currently using FastAPI `BackgroundTasks` for simplicity).
 
 ### Project Structure
-
 AI-Content-Moderation-Platform/
 ├── backend/
 │ ├── app/
@@ -62,16 +58,16 @@ AI-Content-Moderation-Platform/
 
 text
 
+---
+
 ## 🔧 Installation & Setup
 
 ### Prerequisites
-
 - Python 3.10+
 - Node.js 18+
 - MongoDB (Atlas or Local)
 
 ### 1. Clone the Repository
-
 ```bash
 git clone https://github.com/tashfeen786/AI-Content-Moderation-Platform.git
 cd AI-Content-Moderation-Platform
@@ -89,7 +85,6 @@ env
 MONGO_URI=mongodb+srv://<username>:<password>@cluster0.xxxxx.mongodb.net/
 DB_NAME=moderation_db
 SECRET_KEY=your-super-secret-key-here
-# REDIS_URL=redis://localhost:6379 (Optional, for future queue implementation)
 Run the FastAPI server:
 
 bash
@@ -106,43 +101,37 @@ npm run dev
 The React application will be available at http://localhost:5173.
 
 🔐 Default Users (for Testing)
-After setting up the database, you need to create users via the Swagger UI (/docs) or the frontend register page.
-
 Role	Email	Password	Status
-Admin	tashfeen@example.com	test123	(Role set manually in DB via db.users.updateOne(...))
+Admin	tashfeen@example.com	test123	Role set manually in DB
 User	user@example.com	user123	Registered via Swagger/UI
-Note: To make a user an Admin, connect to your MongoDB and run:
-
-javascript
-db.users.updateOne({ email: "tashfeen@example.com" }, { $set: { role: "admin" } })
 🧪 API Endpoints
 Public/User Routes
 Method	Endpoint	Description
 POST	/api/auth/register	User registration
 POST	/api/auth/login	User login (JWT)
 POST	/api/submissions/upload	Upload images (Requires Auth)
-GET	/api/submissions/history	Get user's submission history (Requires Auth)
-GET	/api/submissions/{id}/status	Get specific submission status (Requires Auth)
-Admin Routes (Requires role: "admin")
+GET	/api/submissions/history	Get user's submission history
+GET	/api/submissions/{id}/status	Get specific submission status
+Admin Routes
 Method	Endpoint	Description
 GET	/api/admin/policies	Get all moderation policies
 PUT	/api/admin/policies/{category}	Update a specific policy
-POST	/api/admin/appeals	Submit an appeal (User)
-GET	/api/admin/appeals	Get all appeals (Admin)
-PUT	/api/admin/appeals/{id}/review	Accept/Reject an appeal (Admin)
-GET	/api/admin/analytics/overview	Get platform stats (Admin)
-GET	/api/admin/analytics/user-ranking	Get user ranking (Admin)
-🎨 Screenshots
+GET	/api/admin/appeals	Get all appeals
+PUT	/api/admin/appeals/{id}/review	Accept/Reject an appeal
+GET	/api/admin/analytics/overview	Get platform stats
+GET	/api/admin/analytics/user-ranking	Get user ranking
+📸 Screenshots
 User Dashboard
-View submission history with real-time verdict updates.
-![alt text](image-3.png)
-Admin Panel
-Policies Tab: Fine-tune moderation rules per category.
-![alt text](image.png)
-Appeals Tab: Handle user disputes efficiently.
-![alt text](image-1.png)
-Analytics Tab: Visualize platform activity (Charts & Tables).
-![alt text](image-2.png)
+https://image.png
+
+Admin Panel - Policies
+https://image-1.png
+
+Admin Panel - Appeals Queue
+https://image-2.png
+
+Admin Panel - Analytics
+https://image-3.png
 
 📦 Future Improvements
 Integrate a real AI model (HuggingFace) instead of mock screening.
@@ -151,12 +140,7 @@ Add Redis + RQ for robust background job processing.
 
 Implement pagination for submission history.
 
-Add image previews and thumbnail generation.
-
 Dockerize the application (docker-compose up).
-
-🤝 Contributing
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
 📄 License
 MIT
@@ -164,4 +148,15 @@ MIT
 👨‍💻 Author
 Tashfeen - GitHub
 
-```
+🎯 Quick Start (TL;DR)
+bash
+# Backend
+cd backend
+python -m venv venv && source venv/bin/activate
+pip install -r requirements.txt
+uvicorn app.main:app --reload
+
+# Frontend (New Terminal)
+cd frontend
+npm install
+npm run dev
