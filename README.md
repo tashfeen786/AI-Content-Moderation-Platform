@@ -109,10 +109,10 @@ App: `http://localhost:5173`
 
 | Page | Screenshot |
 | :--- | :--- |
-| User Dashboard | ![User Dashboard](image.png) |
-| Admin Policies | ![Admin Policies](image-1.png) |
-| Admin Appeals | ![Admin Appeals](image-2.png) |
-| Admin Analytics | ![Admin Analytics](image-3.png) |
+| Admin Dashboard | ![User Dashboard](image.png) |
+| Admin Appeals | ![Admin Policies](image-1.png) |
+| Admin Analytics| ![Admin Appeals](image-2.png) |
+| User Dashboard | ![Admin Analytics](image-3.png) |
 
 ---
 
